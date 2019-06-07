@@ -70,6 +70,18 @@ public class GdpController {
                 .sorted(Comparator.comparing(GDP::getGdp))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(sorted.get(sorted.size() / 2), HttpStatus.OK);
+        return new ResponseEntity<>(sorted.get(sorted.size()/2), HttpStatus.OK);
+    }
+
+    // localhost:2019/economy/table
+    @GetMapping(value = "/economy/table")
+    public ModelAndView displayGdpTable(HttpServletRequest request) {
+        logger.trace(request.getRequestURI() + " accessed");
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("gdp");
+        mav.addObject("gdpList", GdpApplication.ourGdpList.gdpList);
+
+        return mav;
     }
 }
