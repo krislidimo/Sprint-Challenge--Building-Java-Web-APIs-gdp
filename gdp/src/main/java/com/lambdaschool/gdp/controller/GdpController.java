@@ -73,6 +73,18 @@ public class GdpController {
         return new ResponseEntity<>(sorted.get(sorted.size()/2), HttpStatus.OK);
     }
 
+    //localhost:2019/total
+    @GetMapping(value = "/total", produces = {"application/json"})
+    public ResponseEntity<?> getTotal(HttpServletRequest request) {
+        logger.info(request.getRequestURI() + " accessed");
+
+        Long total = GdpApplication.ourGdpList.gdpList.stream()
+                .map(country -> country.getGdp())
+                .reduce((long)0,(ans,i)-> ans+i);
+
+        return new ResponseEntity<>(new GDP("Total", String.format("%s",total)), HttpStatus.OK);
+    }
+
     // localhost:2019/economy/table
     @GetMapping(value = "/economy/table")
     public ModelAndView displayGdpTable(HttpServletRequest request) {
